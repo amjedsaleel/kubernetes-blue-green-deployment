@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dj-hello-v2
+  labels:
+    app: dj-hello-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dj-hello-v2
+  template:
+    metadata:
+      labels:
+        app: dj-hello-v2
+        service: dj-hello
+        version: v2
+    spec:
+      containers:
+        - name: dj-hello-v2
+          image: amjedsaleel/dj-hello:v2
+          ports:
+            - containerPort: 8000
