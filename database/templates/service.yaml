@@ -8,5 +8,5 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - protocol: TCP
-      port: {{ .Values.service.port }}
+      port: {{ .Values.image.port }}
       targetPort: {{ .Values.image.port }}

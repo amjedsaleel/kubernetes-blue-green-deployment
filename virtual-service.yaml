@@ -10,10 +10,10 @@ spec:
   http:
     - route:
       - destination:
-          host: dj-hello-service # service name
-          subset: v1
-        weight: 0
+          host: version1 # service name
+          # subset: v1
+        weight: 50
       - destination:
-          host: dj-hello-service # service name
-          subset: v2
-        weight: 100
+          host: version2.default.svc.cluster.local # service name
+          # subset: v2
+        weight: 50
