@@ -1,26 +1,25 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: dj-hello-v1
+  name: postgres
   labels:
-    app: dj-hello-v1
+    app: postgres
 spec:
   replicas: 1
+  serviceName: postgres
   selector:
     matchLabels:
-      app: dj-hello-v1
+      app: postgres
   template:
     metadata:
       labels:
-        app: dj-hello-v1
-        service: dj-hello
-        version: v1
+        app: postgres
     spec:
       containers:
-        - name: dj-hello-v1
-          image: amjedsaleel/dj-hello:v1.2
+        - name: postgres
+          image: postgres:alpine
           ports:
-            - containerPort: 8000
+            - containerPort: 5432
           env:
             - name: DB_NAME
               valueFrom:
@@ -32,7 +31,7 @@ spec:
                 secretKeyRef:
                   name: postgres
                   key: db-user
-            - name: DB_PASSWORD
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres
@@ -42,8 +41,16 @@ spec:
                 secretKeyRef:
                   name: postgres
                   key: db-port
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: configmap-dj
-                  key: postgres_db_url
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
